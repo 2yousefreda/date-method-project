@@ -3,6 +3,7 @@
 #include<iostream>
 #include<string>
 #include "ClsString.h"
+
 using namespace std;
 
 class ClsDate
@@ -77,7 +78,7 @@ public:
         day = now->tm_mday;
         return ClsDate(day, month, year);
     }
-    static bool isleepYear(int year) {
+    static bool IsLeapYear(int year) {
 
         // if year is divisible by 4 AND not divisible by 100
         // OR if year is divisible by 400
@@ -85,17 +86,17 @@ public:
         return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
 
     }
-    bool isleepYear() {
-        return isleepYear(_year);
+    bool IsLeapYear() {
+        return IsLeapYear(_year);
     }
-    static short numberOfDaysInMonth(short month, short year) {
+    static short NumberOfDaysInMonth(short month, short year) {
         if (month < 1 || month>12)
             return 0;
         int NumberOfDays[12]{ 31,28,31,30,31,30,31,31,30,31,30,31 };
-        return(month == 2) ? (isleepYear(year) ? 29 : 28) : NumberOfDays[month - 1];
+        return(month == 2) ? (IsLeapYear(year) ? 29 : 28) : NumberOfDays[month - 1];
     }
-    short numberOfDaysInMonth() {
-        return numberOfDaysInMonth(_month, _year);
+    short NumberOfDaysInMonth() {
+        return NumberOfDaysInMonth(_month, _year);
     }
     static short DayOfWeekOrder(ClsDate date) {
         short a = (14 - date.Month) / 12;
@@ -138,7 +139,7 @@ public:
         return IsBusinessDay(*this);
     }
     static bool isLastDayInMonth(ClsDate date) {
-        short numberOfDays = numberOfDaysInMonth(date.Month, date.Year);
+        short numberOfDays = NumberOfDaysInMonth(date.Month, date.Year);
         return (date.Day == numberOfDays) ? true : false;
     }
     bool isLastDayInMonth() {
@@ -215,7 +216,7 @@ public:
     static bool IsDate1AfterDate2(ClsDate Date1, ClsDate Date2) {
         return !IsDate1BeforeDate2(Date1, Date2);
     }
-    bool IsDate1AfterDate2(ClsDate Date2){
+    bool IsDate1AfterDate2(ClsDate Date2) {
         return IsDate1AfterDate2(*this, Date2);
     }
 
@@ -379,7 +380,7 @@ public:
     }
     static short NumberOfDayFromBegainingTheYear(ClsDate date) {
         int NumberOfDays[12]{ 31,28,31,30,31,30,31,31,30,31,30,31 };
-        if (isleepYear(date.Year))
+        if (IsLeapYear(date.Year))
         {
             NumberOfDays[1] = 29;
         }
@@ -405,16 +406,55 @@ public:
         return DaysUntillEndOfWeek(*this);
     }
     static short DaysUntillEndOfMonth(ClsDate date) {
-        return numberOfDaysInMonth(date.Month, date.Year) - date.Day;
+        return NumberOfDaysInMonth(date.Month, date.Year) - date.Day;
     }
     short DaysUntillEndOfMonth() {
         return DaysUntillEndOfMonth(*this);
     }
     static short DaysUntillEndOfYear(ClsDate date) {
-        return isleepYear(date.Year) ? 366 - NumberOfDayFromBegainingTheYear(date) : 365 - NumberOfDayFromBegainingTheYear(date);
+        return IsLeapYear(date.Year) ? 366 - NumberOfDayFromBegainingTheYear(date) : 365 - NumberOfDayFromBegainingTheYear(date);
     }
     short DaysUntillEndOfYear() {
         return DaysUntillEndOfYear(*this);
     }
+
+    static	bool IsValidDate(ClsDate Date)
+    {
+
+        if (Date.Day < 1 || Date.Day>31)
+            return false;
+
+        if (Date.Month < 1 || Date.Month>12)
+            return false;
+
+        if (Date.Month == 2)
+        {
+            if (IsLeapYear(Date.Year))
+            {
+                if (Date.Day > 29)
+                    return false;
+            }
+            else
+            {
+                if (Date.Day > 28)
+                    return false;
+            }
+        }
+
+        short DaysInMonth = NumberOfDaysInMonth(Date.Month, Date.Year);
+
+        if (Date.Day > DaysInMonth)
+            return false;
+
+        return true;
+
+    }
+
+    bool IsValid()
+    {
+        return IsValidDate(*this);
+    }
+
+
 };
 
