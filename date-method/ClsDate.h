@@ -212,9 +212,13 @@ public:
     bool IsDate1BeforeDate2(ClsDate Date2) {
         return IsDate1BeforeDate2(*this, Date2);
     }
-    bool IsDate1AfterDate2(ClsDate Date1, ClsDate Date2) {
+    static bool IsDate1AfterDate2(ClsDate Date1, ClsDate Date2) {
         return !IsDate1BeforeDate2(Date1, Date2);
     }
+    bool IsDate1AfterDate2(ClsDate Date2){
+        return IsDate1AfterDate2(*this, Date2);
+    }
+
     static void swapDate(ClsDate& date1, ClsDate& date2) {
         ClsDate Temp;
         Temp = date1;
