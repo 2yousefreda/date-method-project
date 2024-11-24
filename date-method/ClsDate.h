@@ -450,7 +450,7 @@ public:
 
     }
 
-    bool IsValid()
+    bool IsValidDate()
     {
         return IsValidDate(*this);
     }
